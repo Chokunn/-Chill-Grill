@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chill & Grill — Minimal Restaurant</title>
+  <meta name="description" content="Chill & Grill — ร้านอาหารสไตล์มินิมอล อบอุ่น เรียบง่าย เมนูปิ้งย่าง/พาสต้า พร้อมสั่งซื้อออนไลน์ และร่วมงาน/แฟรนไชส์" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #ffffff; --ink: #1e1f24; --muted:#6b7280; --line:#e5e7eb;
+      --accent:#e4572e;   /* warm grill */
+      --accent-2:#2aa198; /* cool chill */
+      --radius:18px; --shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0b0c10; --ink:#f7f7f7; --muted:#a3a3a3; --line:#1f2430; --shadow: 0 10px 30px rgba(0,0,0,.3); }
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; background:var(--bg); color:var(--ink); font:400 16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif}
+    img{max-width:100%; display:block; border-radius:12px}
+    h1,h2,h3{font-family:Poppins, Inter, sans-serif; margin:0 0 .5rem}
+    p{margin:0 0 1rem; color:var(--muted)}
+    a{color:inherit; text-decoration:none}
+    .container{width:min(1080px,92%); margin-inline:auto}
+
+    /* header */
+    header{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.7); backdrop-filter: blur(8px); border-bottom:1px solid var(--line)}
+    @media (prefers-color-scheme: dark){ header{background:rgba(11,12,16,.6)} }
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:.8rem 0}
+    .brand{font-weight:700; letter-spacing:.5px}
+    .brand em{font-style:normal; color:var(--accent)}
+    .menu{display:flex; gap:1rem}
+    .menu a{padding:.45rem .8rem; border-radius:999px}
+    .menu a:hover{background:var(--line)}
+    #menuToggle{display:none}
+    @media (max-width:760px){ .menu{display:none} #menuToggle{display:inline-flex} }
+
+    /* hero */
+    .hero{padding:clamp(2.4rem,6vw,5rem) 0 2rem}
+    .hero-grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:1.4rem; align-items:center}
+    @media (max-width:900px){ .hero-grid{grid-template-columns:1fr} }
+    .badge{display:inline-flex; gap:.4rem; align-items:center; font-size:.9rem; color:var(--muted)}
+    .badge .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+    .cta{display:flex; gap:.7rem; flex-wrap:wrap; margin-top:1rem}
+    .btn{display:inline-flex; align-items:center; gap:.5rem; padding:.8rem 1rem; border-radius:999px; border:1px solid var(--line); box-shadow:var(--shadow); background:#fff}
+    .btn.primary{border:0; color:#fff; background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+
+    /* sections */
+    section{padding:2.6rem 0}
+    .section-title{font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom:.6rem}
+    .kicker{color:var(--muted); font-size:.95rem; margin-bottom:1rem}
+
+    /* cards & grid */
+    .grid{display:grid; gap:1rem}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:900px){ .grid-3{grid-template-columns:1fr 1fr} }
+    @media (max-width:620px){ .grid-3,.grid-2{grid-template-columns:1fr} }
+    .card{border:1px solid var(--line); border-radius:var(--radius); padding:1rem; box-shadow:var(--shadow); background:#fff}
+    @media (prefers-color-scheme: dark){ .card{background:#0f1117} }
+
+    /* menu list with images */
+    .menuitem{display:grid; grid-template-columns: auto 1fr auto; align-items:center; gap:1rem; padding:.9rem 0; border-bottom:1px dashed var(--line)}
+    .menuitem:last-child{border-bottom:0}
+    .thumb-sm{width:88px; height:64px; object-fit:cover; border-radius:10px}
+    .price{white-space:nowrap; font-weight:600}
+
+    /* info */
+    .info{display:grid; grid-template-columns:1fr 1fr; gap:1rem}
+    @media (max-width:680px){ .info{grid-template-columns:1fr} }
+    .pill{display:inline-flex; align-items:center; gap:.4rem; padding:.35rem .7rem; border:1px solid var(--line); border-radius:999px; font-size:.85rem}
+
+    /* footer */
+    footer{padding:2rem 0 3rem; border-top:1px solid var(--line); color:var(--muted); text-align:center}
+  </style>
+</head>
+<body>
+  <!-- header -->
+  <header>
+    <div class="container nav">
+      <a href="#home" class="brand">Chill <em>&</em> Grill</a>
+      <nav class="menu" aria-label="หลัก">
+        <a href="#menu">เมนู</a>
+        <a href="#about">เกี่ยวกับ</a>
+        <a href="#order">สั่งซื้อ</a>
+        <a href="#franchise">ร่วมงาน/แฟรนไชส์</a>
+        <a href="#contact">ติดต่อ</a>
+      </nav>
+      <button id="menuToggle" class="btn" aria-label="เปิดเมนู">เมนู</button>
+    </div>
+  </header>
+
+  <!-- hero -->
+  <main id="home" class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="badge"><span class="dot"></span> Minimal • Cozy • Delicious</div>
+        <h1 style="font-size:clamp(2rem,6vw,3.4rem); margin:.3rem 0 .4rem">ชิลไปกับไฟย่าง • <span style="background:linear-gradient(90deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent">Chill & Grill</span></h1>
+        <p>ร้านอาหารบรรยากาศมินิมอล อบอุ่น สบายตา เสิร์ฟสเต๊ก พาสต้า และเมนูย่างหอมไฟ พร้อมเครื่องดื่มชื่นใจ</p>
+        <div class="cta">
+          <a class="btn primary" href="#order">สั่งซื้อ</a>
+          <a class="btn" href="#menu">ดูเมนู</a>
+          <a class="btn" href="#franchise">ร่วมงาน/แฟรนไชส์</a>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1200&auto=format&fit=crop" alt="สเต๊กย่างบนเตาถ่าน"/>
+      </div>
+    </div>
+  </main>
+
+  <!-- menu with images -->
+  <section id="menu">
+    <div class="container">
+      <h2 class="section-title">เมนูแนะนำ</h2>
+      <p class="kicker">เลือกวัตถุดิบคุณภาพ ปรุงอย่างเรียบง่าย รสชาติชัดเจน</p>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>From the Grill</h3>
+          <div class="menuitem">
+            <img class="thumb-sm" src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=800&auto=format&fit=crop" alt="Sirloin steak"/>
+            <div><b>Chill Sirloin Steak</b><br><small>มันบด + ซอสพริกไทยดำ</small></div>
+            <div class="price">329฿</div>
+          </div>
+          <div class="menuitem">
+            <img class="thumb-sm" src="https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=800&auto=format&fit=crop" alt="BBQ Chicken"/>
+            <div><b>Smoky Chicken</b><br><small>อกไก่ย่างซอสบาร์บีคิว</small></div>
+            <div class="price">219฿</div>
+          </div>
+          <div class="menuitem">
+            <img class="thumb-sm" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop" alt="Grilled salmon"/>
+            <div><b>Grilled Salmon</b><br><small>เลมอนบัตเตอร์ ดิลล์สด</small></div>
+            <div class="price">359฿</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Comfort Bowls</h3>
+          <div class="menuitem">
+            <img class="thumb-sm" src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?q=80&w=800&auto=format&fit=crop" alt="Aglio e Olio"/>
+            <div><b>Aglio e Olio</b><br><small>พริกแห้ง กระเทียม น้ำมันมะกอก</small></div>
+            <div class="price">149฿</div>
+          </div>
+          <div class="menuitem">
+            <img class="thumb-sm" src="https://images.unsplash.com/photo-1551183053-8f7f36e7f54b?q=80&w=800&auto=format&fit=crop" alt="Truffle pasta"/>
+            <div><b>Truffle Cream Pasta</b><br><small>ครีมทรัฟเฟิลหอมมัน</small></div>
+            <div class="price">199฿</div>
+          </div>
+          <div class="menuitem">
+            <img class="thumb-sm" src="https://images.unsplash.com/photo-1625944528087-0e4cfbd4d9c8?q=80&w=800&auto=format&fit=crop" alt="Ramen"/>
+            <div><b>Chill Ramen</b><br><small>ซุปกระดูกเข้มข้น หมูชาชูย่างไฟ</small></div>
+            <div class="price">169฿</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- about / hours -->
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">เกี่ยวกับเรา</h2>
+      <div class="info">
+        <div class="card">
+          <h3>ปรัชญา</h3>
+          <p>Minimal ไม่ได้แปลว่าน้อย แต่แปลว่า "เลือกสิ่งที่ใช่" — เราเลือกวัตถุดิบดี ๆ เทคนิคย่างไฟพอดี และเสิร์ฟในบรรยากาศชิล ๆ ที่คุณอยากกลับมาอีก</p>
+          <div style="margin-top:.6rem; display:flex; gap:.4rem; flex-wrap:wrap">
+            <span class="pill">🔥 Char‑grilled</span>
+            <span class="pill">🥗 Fresh</span>
+            <span class="pill">🎵 Cozy</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>เวลาเปิด‑ปิด</h3>
+          <ul style="list-style:none; padding:0; margin:.4rem 0 0">
+            <li>Mon–Fri: 11:00–21:30</li>
+            <li>Sat–Sun: 10:00–22:00</li>
+          </ul>
+          <h3 style="margin-top:1rem">ที่ตั้ง</h3>
+          <p>📍 Bangkok, Thailand</p>
+          <p style="margin-top:.6rem"><a class="btn" href="#contact">ดูแผนที่ & ติดต่อ</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- order -->
+  <section id="order">
+    <div class="container">
+      <h2 class="section-title">สั่งซื้อ</h2>
+      <p class="kicker">เลือกเมนู ปรับจำนวน ใส่ข้อมูลติดต่อ — เดี๋ยวเราคอนเฟิร์มกลับอย่างรวดเร็ว</p>
+      <div class="card">
+        <form id="orderForm" action="#" method="post" style="display:grid; gap:.8rem">
+          <div style="display:grid; gap:.8rem; grid-template-columns:1fr 1fr 1fr">
+            <label>เมนู
+              <select id="oItem" required style="width:100%; padding:.8rem 1rem; border:1px solid var(--line); border-radius:12px">
+                <option value="Chill Sirloin Steak">Chill Sirloin Steak — 329฿</option>
+                <option value="Smoky Chicken">Smoky Chicken — 219฿</option>
+                <option value="Grilled Salmon">Grilled Salmon — 359฿</option>
+                <option value="Aglio e Olio">Aglio e Olio — 149฿</option>
+                <option value="Truffle Cream Pasta">Truffle Cream Pasta — 199฿</option>
+                <option value="Chill Ramen">Chill Ramen — 169฿</option>
+              </select>
+            </label>
+            <label>จำนวน<br><input id="oQty" type="number" min="1" value="1" required style="width:100%; padding:.8rem 1rem; border:1px solid var(--line); border-radius:12px"></label>
+            <label>รับแบบ<br>
+              <select id="oType" style="width:100%; padding:.8rem 1rem; border:1px solid var(--line); border-radius:12px">
+                <option value="pickup">รับหน้าร้าน</option>
+                <option value="delivery">เดลิเวอรี่</option>
+              </select>
+            </label>
+          </div>
+          <div style="display:grid; gap:.8rem; grid-template-columns:1fr 1fr">
+            <label>ชื่อ<br><input id="oName" required style="width:100%; padding:.8rem 1rem; border:1px solid var(--line); border-radius:12px"></label>
+            <label>เบอร์โทร<br><input id="oPhone" required style="width:100%; padding:.8rem 1rem; border:1px solid var(--line); border-radius:12px"></label>
+          </div>
+          <label>ที่อยู่ (ถ้าเดลิเวอรี่)<br><textarea id="oAddr" style="width:100%; min-height:100px; padding:.8rem 1rem; border:1px solid var(--line); border-radius:12px"></textarea></label>
+          <div style="display:flex; gap:.6rem; align-items:center; flex-wrap:wrap">
+            <button class="btn primary" type="submit">ยืนยันการสั่งซื้อ</button>
+            <span id="orderMsg" style="color:var(--muted)"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- franchise -->
+  <section id="franchise">
+    <div class="container">
+      <h2 class="section-title">ร่วมงาน & แฟรนไชส์</h2>
+      <div class="card">
+        <p>สนใจเปิดสาขาแฟรนไชส์ หรือร่วมงานเป็นพาร์ตเนอร์? ฝากข้อมูลไว้ได้เลย ทีมงานจะติดต่อกลับ</p>
+        <form id="frForm" action="#" method="post" style="display:grid; gap:.8rem; margin-top:.6rem">
+          <div style="display:grid; gap:.8rem; grid-template-columns:1fr 1fr">
+            <label>ชื่อ/บริษัท<br><input id="fName" required style="width:100%; padding:.8rem 1rem; border:1px solid var(--line); border-radius:12px"></label>
+            <label>อีเมล/โทร<br><input id="fContact" required style="width:100%; padding:.8rem 1rem; border:1px solid var(--line); border-radius:12px"></label>
+          </div>
+          <label>ข้อความ<br><textarea id="fMsg" style="width:100%; min-height:100px; padding:.8rem 1rem; border:1px solid var(--line); border-radius:12px"></textarea></label>
+          <button class="btn" type="submit">ส่งคำขอร่วมงาน/แฟรนไชส์</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- contact / map -->
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">ติดต่อเรา</h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>ช่องทาง</h3>
+          <p>โทร: 08x‑xxx‑xxxx<br>Line: @chillngrill<br>Instagram: @chillngrill</p>
+          <p style="margin-top:.6rem">อีเมล: hello@chillngrill.example</p>
+        </div>
+        <div class="card">
+          <h3>แผนที่</h3>
+          <p>ฝัง Google Map ได้ที่นี่ (วาง iframe) หรือใช้รูปภาพแผนที่ชั่วคราว</p>
+          <img src="https://images.unsplash.com/photo-1502920917128-1aa500764cec?q=80&w=1200&auto=format&fit=crop" alt="แผนที่ placeholder">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">© <span id="y"></span> Chill & Grill — minimal, cozy, delicious</div>
+  </footer>
+
+  <script>
+    // simple mobile menu
+    const toggle = document.getElementById('menuToggle');
+    const menu = document.querySelector('nav.menu');
+    toggle?.addEventListener('click',()=>{
+      const open = menu.style.display === 'flex';
+      menu.style.display = open ? 'none' : 'flex';
+      menu.style.flexDirection = 'column';
+      menu.style.gap = '.6rem';
+    });
+
+    // order form (simulate)
+    const of = document.getElementById('orderForm');
+    of?.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const btn = of.querySelector('button[type="submit"]');
+      const msg = document.getElementById('orderMsg');
+      btn.disabled = true; const old = btn.textContent; btn.textContent = 'กำลังส่ง…';
+      await new Promise(r=>setTimeout(r, 900));
+      btn.disabled = false; btn.textContent = old; msg.textContent = 'รับคำสั่งซื้อเรียบร้อย! เราจะติดต่อยืนยัน';
+      of.reset();
+    });
+
+    // franchise form (simulate)
+    const ff = document.getElementById('frForm');
+    ff?.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const btn = ff.querySelector('button[type="submit"]');
+      btn.disabled = true; const old = btn.textContent; btn.textContent = 'กำลังส่ง…';
+      await new Promise(r=>setTimeout(r, 900));
+      btn.disabled = false; btn.textContent = old; alert('ส่งคำขอเรียบร้อย! ทีมงานจะติดต่อกลับ');
+      ff.reset();
+    });
+
+    // year
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
